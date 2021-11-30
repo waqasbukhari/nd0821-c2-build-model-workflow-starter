@@ -33,6 +33,11 @@ def go(args):
     logger.info("Converting string to datetime column")
     df['last_review'] = pd.to_datetime(df['last_review'])
 
+    # Drop data outside the specified lat lon
+    logger.info("Removing data beyond the specified lat-lon ")
+    idx = df['longitude'].between(-74.25, -73.50) & df['latitude'].between(40.5, 41.2)
+    df = df[idx].copy()
+
     # Saving the dataframe. 
     logger.info("Saving the dataframe. ")
     df.to_csv("clean_sample.csv", index=False)
